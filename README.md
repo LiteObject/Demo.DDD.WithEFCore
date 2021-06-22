@@ -1,1 +1,1 @@
-# Demo.DDD.WithEFCore
+# Domain Driven Design with EF Core
