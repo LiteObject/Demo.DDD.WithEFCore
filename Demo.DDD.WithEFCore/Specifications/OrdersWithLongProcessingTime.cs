@@ -19,6 +19,6 @@ namespace Demo.DDD.WithEFCore.Specifications
                (order.Status == Entities.Enums.OrderStatus.ProcessingStarted ||
                order.Status == Entities.Enums.OrderStatus.ProcessingHalted ||
                order.Status == Entities.Enums.OrderStatus.ProcessingEnded) &&
-               order.Created <= DateTime.UtcNow.AddDays(-2);
+               order.OrderDate <= DateTime.UtcNow.AddDays(-2);
     }
 }

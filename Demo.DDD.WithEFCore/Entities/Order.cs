@@ -44,6 +44,10 @@ namespace Demo.DDD.WithEFCore.Entities
             return total;
         }
 
+        /// <summary>
+        /// Use this method to get a humanized version of the status.
+        /// </summary>
+        /// <returns>Returns status string</returns>
         public string GetStatus() 
         {
             return this.Status.Humanize();

@@ -28,13 +28,15 @@ namespace Demo.DDD.WithEFCore.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
+            /* optionsBuilder.UseSqlServer(
                 "Server=(LocalDb)\\MSSQLLocalDB;Database=DemoOwnedEntity;Trusted_Connection=True;MultipleActiveResultSets=true",
                 options => options.EnableRetryOnFailure()); // Connection Resiliency
 
             optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.LogTo(Console.WriteLine);
-            optionsBuilder.EnableDetailedErrors();
+            optionsBuilder.EnableDetailedErrors(); */
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
