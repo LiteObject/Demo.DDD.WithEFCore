@@ -48,16 +48,24 @@ namespace Demo.DDD.WithEFCore.UnitTest
                     OrderDate = DateTime.Today.AddDays(-5),
                     ShippingAddress = new Address("456 Street", "House #789", "Dallas", "Texas", "75248"),
                     LineItems = GetLineItems(),
-                    Status = OrderStatus.ProcessingHalted
+                    Status = OrderStatus.ProcessingStarted
                 },
-                /* new()
+                new()
                 {
                     Note = "7 Days older than today",
                     OrderDate = DateTime.Today.AddDays(-7),
                     ShippingAddress = new Address("456 Street", "House #789", "Dallas", "Texas", "75248"),
                     LineItems = GetLineItems(),
                     Status = OrderStatus.ProcessingHalted
-                } */
+                },
+                new()
+                {
+                    Note = "7 Days older than today",
+                    OrderDate = DateTime.Today.AddDays(-7),
+                    ShippingAddress = new Address("456 Street", "House #789", "Dallas", "Texas", "75248"),
+                    LineItems = GetLineItems(),
+                    Status = OrderStatus.Created
+                }
             };
 
             await context.Orders.AddRangeAsync(orders);
@@ -69,10 +77,10 @@ namespace Demo.DDD.WithEFCore.UnitTest
 
             // ACT
             var ordersWithLongProcessingTime = await repo.FindAsync(ordersWithLongProcessingTimeSpec, o => o.LineItems);
-            this._output.WriteLine($"{ordersWithLongProcessingTime.Count} record(s) returned by \"{nameof(ordersWithLongProcessingTimeSpec)}\".");
+            this._output.WriteLine($"{nameof(ordersWithLongProcessingTime)}:\n {System.Text.Json.JsonSerializer.Serialize(ordersWithLongProcessingTime)}");
 
             // ASSERT
-            Assert.Collection<Order>(ordersWithLongProcessingTime, order => {
+            Assert.All(ordersWithLongProcessingTime, order => {
                 Assert.True(order.OrderDate.AddDays(5) <= DateTime.Today);
                 Assert.True(
                     order.Status == OrderStatus.ProcessingStarted ||

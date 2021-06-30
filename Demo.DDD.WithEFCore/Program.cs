@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Demo.DDD.WithEFCore
 {
+    [ExcludeFromCodeCoverage]
     class Program
     {
         static async Task Main(string[] args)

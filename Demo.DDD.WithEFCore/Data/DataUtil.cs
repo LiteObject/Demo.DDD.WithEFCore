@@ -1,12 +1,14 @@
 ﻿using Demo.DDD.WithEFCore.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Demo.DDD.WithEFCore.Data
 {
+    [ExcludeFromCodeCoverage]
     public static class DataUtil
     {
         public static List<Order> GenerateOrders()
