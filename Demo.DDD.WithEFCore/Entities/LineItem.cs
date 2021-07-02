@@ -1,13 +1,20 @@
-﻿namespace Demo.DDD.WithEFCore.Entities
+﻿using System;
+
+namespace Demo.DDD.WithEFCore.Entities
 {
     /// <summary>
     /// The LineItem/OrderItem - Child Entity
     /// </summary>
     public class LineItem : BaseEntity
     {
+        private double _unitPrice;
+
         public string Name { get; set; }
         public string Description { get; set; }
-        public double UnitPrice { get; set; }
+        public double UnitPrice {
+            get { return _unitPrice; }
+            set { this._unitPrice = value; }
+        }
         public double Quantity { get; set; }
 
         public double CalculateSubTotal() 

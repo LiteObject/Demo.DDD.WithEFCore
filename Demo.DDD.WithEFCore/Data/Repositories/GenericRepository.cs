@@ -116,9 +116,17 @@
         }
 
         /// <inheritdoc />
-        public virtual async Task<List<TEntity>> GetAllAsync()
+        public virtual async Task<List<TEntity>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await this.DbSet.AsNoTracking().ToListAsync();
+            if (pageSize < 1) 
+            { 
+                pageSize = 1;
+            }
+
+            var skip = (pageNumber - 1) * pageSize;
+            var take = pageSize;
+
+            return await this.DbSet.AsNoTracking().Skip(skip).Take(take).ToListAsync();
         }
 
         /// <inheritdoc />

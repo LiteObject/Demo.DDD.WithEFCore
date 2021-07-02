@@ -1,33 +1,38 @@
-﻿using AutoMapper;
-using Demo.DDD.WithEFCore.Data;
-using Demo.DDD.WithEFCore.Data.Repositories;
-using Demo.DDD.WithEFCore.Entities;
-using Demo.DDD.WithEFCore.Entities.Enums;
-using Demo.DDD.WithEFCore.Specifications;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
-
-namespace Demo.DDD.WithEFCore.UnitTest
+﻿namespace Demo.DDD.WithEFCore.UnitTest
 {
-    public class SpecificationUnitTest
+    using AutoMapper;
+    using Demo.DDD.WithEFCore.API.Controllers;
+    using Demo.DDD.WithEFCore.Data;
+    using Demo.DDD.WithEFCore.Data.Repositories;
+    using Demo.DDD.WithEFCore.Entities;
+    using Demo.DDD.WithEFCore.Entities.Enums;
+    using Demo.DDD.WithEFCore.Specifications;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Xunit;
+    using Xunit.Abstractions;
+
+    public class OrdersControllerUnitTest
     {
         private readonly ITestOutputHelper _output;
 
-        public SpecificationUnitTest(ITestOutputHelper output) => _output = output ?? throw new ArgumentNullException($"{nameof(output)} cannot be null.");
+        public OrdersControllerUnitTest(ITestOutputHelper output) => _output = output ?? throw new ArgumentNullException($"{nameof(output)} cannot be null.");
 
+        /// <summary>
+        /// For more examples: https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing?view=aspnetcore-5.0
+        /// </summary>
+        /// <returns></returns>
         [Fact]
-        public async Task TestOrdersWithLongProcessingTimeAsync()
+        public async Task ShouldReturnOk() 
         {
-            #region ARRANGE
-
+            // ARRANGE
             var options = new DbContextOptionsBuilder<OrderDbContext>()
-               .LogTo(_output.WriteLine)
-               .UseInMemoryDatabase(Guid.NewGuid().ToString())
-               .Options;
+              .LogTo(_output.WriteLine)
+              .UseInMemoryDatabase(Guid.NewGuid().ToString())
+              .Options;
             using var context = new OrderDbContext(options);
             IMapper mapper = new MapperConfiguration(cfg => { }).CreateMapper();
             var repo = new GenericRepository<Order, OrderDbContext>(context, mapper);
@@ -40,7 +45,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
                     OrderDate = DateTime.Today.AddDays(-1),
                     ShippingAddress = new Address("123 Street", "House #456", "Frisco", "Texas", "75033"),
                     LineItems = GetLineItems(),
-                    Status = OrderStatus.ProcessingHalted,                    
+                    Status = OrderStatus.ProcessingHalted,
                 },
                 new()
                 {
@@ -71,22 +76,22 @@ namespace Demo.DDD.WithEFCore.UnitTest
             await context.Orders.AddRangeAsync(orders);
             await context.SaveChangesAsync();
 
-            #endregion SETUP
+            var pageNumber = 1;
+            var pageSize = 2;
 
-            var ordersWithLongProcessingTimeSpec = new OrdersWithLongProcessingTime();
+            var controller = new OrdersController(repo);
 
             // ACT
-            var ordersWithLongProcessingTime = await repo.FindAsync(ordersWithLongProcessingTimeSpec, o => o.LineItems);
-            this._output.WriteLine($"{nameof(ordersWithLongProcessingTime)}:\n {System.Text.Json.JsonSerializer.Serialize(ordersWithLongProcessingTime)}");
+            var result = await controller.Get(pageNumber, pageSize);
 
             // ASSERT
-            Assert.All(ordersWithLongProcessingTime, order => {
-                Assert.True(order.OrderDate.AddDays(5) <= DateTime.Today);
-                Assert.True(
-                    order.Status == OrderStatus.ProcessingStarted ||
-                    order.Status == OrderStatus.ProcessingHalted ||
-                    order.Status == OrderStatus.ProcessingEnded);                
-            });
+            var viewResult = Assert.IsType<OkObjectResult>(result);
+            Assert.IsAssignableFrom<IActionResult>(viewResult);
+
+            var model = Assert.IsAssignableFrom<List<Order>>(viewResult.Value);
+            Assert.NotEmpty(model);
+            Assert.True(orders.Count > pageSize);
+            Assert.Equal(pageSize, model.Count);
         }
 
         private List<LineItem> GetLineItems()

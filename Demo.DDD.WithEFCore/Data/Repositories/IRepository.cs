@@ -37,8 +37,8 @@ namespace Demo.DDD.WithEFCore.Data.Repositories
         /// </summary>
         /// <returns>
         /// The <see cref="Task"/>.
-        /// </returns>
-        Task<List<T>> GetAllAsync();
+        /// </returns>        
+        Task<List<T>> GetAllAsync(int pageSize, int pageNumber);
 
         /// <summary>
         /// The find async.
