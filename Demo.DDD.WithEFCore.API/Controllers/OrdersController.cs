@@ -22,6 +22,9 @@
         {
             if (pageSize > 100)
             { 
+                // ToDo: Future requirment - we want to notify caller if page size is greater than 100.
+                // return BadRequest(...);
+
                 pageSize = 100;
             }
 
