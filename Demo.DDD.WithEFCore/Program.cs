@@ -29,14 +29,14 @@ namespace Demo.DDD.WithEFCore
 
             /* var testOrder = await context.Orders.FirstOrDefaultAsync(o => o.Status == Entities.Enums.OrderStatus.Created);
             testOrder.Status = Entities.Enums.OrderStatus.CancelledByBuyer;
-            await context.SaveChangesAsync();*/            
+            await context.SaveChangesAsync();*/
 
             /* var currentOrder = await context.Orders.Include(o => o.LineItems).FirstOrDefaultAsync();            
             PrintInfo(currentOrder.GetOrderDetails()); */
 
             IMapper mapper = new MapperConfiguration(cfg => { }).CreateMapper();
             var repo = new GenericRepository<Order, OrderDbContext>(context, mapper);
-
+            
             var cancelledOrders = new CancelledOrders();
             var ordersWithLongProcessingTime = new OrdersWithLongProcessingTime();
 

@@ -22,6 +22,24 @@ namespace Demo.DDD.WithEFCore.UnitTest
         [Fact]        
         public void LineItemUnitPriceCannotBeLessThenOrEqualToOne() 
         {
+            // ARRANGE
+            var lineItem = new LineItem();
+
+            // ACT & ASEERT
+            Assert.Throws<InvalidOperationException>(() => lineItem.UnitPrice = .75);
+        }
+
+        [Fact]
+        public void LineItemUnitPriceCanBeSaved()
+        {
+            // ARRANGE
+            var lineItem = new LineItem();
+
+            // ACT
+            lineItem.UnitPrice = 1;
+
+            // ASSERT
+            Assert.Equal(1, lineItem.UnitPrice);
         }
     }
 }

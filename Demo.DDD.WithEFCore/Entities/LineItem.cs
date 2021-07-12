@@ -13,7 +13,14 @@ namespace Demo.DDD.WithEFCore.Entities
         public string Description { get; set; }
         public double UnitPrice {
             get { return _unitPrice; }
-            set { this._unitPrice = value; }
+            set {
+                if (value < 1)
+                {
+                    throw new InvalidOperationException($"{nameof(value)} must be >= 1");
+                }
+
+                this._unitPrice = value;             
+            }
         }
         public double Quantity { get; set; }
 
