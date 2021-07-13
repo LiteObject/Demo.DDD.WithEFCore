@@ -11,8 +11,11 @@
     using System.Threading.Tasks;
 
     /* If we don't want versioning here, we can implement as a header value */
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("1.1")]
+    [ApiVersion("2.0")]
     public class OrdersController : ControllerBase
     {
         private readonly IRepository<Order> orderRepo;
@@ -25,7 +28,15 @@
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id) 
         {
-            return this.Ok(await Task.FromResult(new Order { Id = 123 }));
+            // ToDo: Use repo
+            if (id == 123)
+            {
+                return this.Ok(await Task.FromResult(new Order { Id = 123 }));
+            }
+            else 
+            {
+                return this.NotFound($"No record (with id {id}) found in the system.");
+            }            
         }
 
         [HttpGet]
@@ -50,7 +61,7 @@
             return Ok(orders);
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromRoute] int id, [FromBody] DTO.Order order) 
         {
             // We can do this validation globally as well.
@@ -78,7 +89,8 @@
         /// <param name="id"></param>
         /// <param name="patchDocument"></param>
         /// <returns></returns>
-        [HttpPatch("id")]
+        [HttpPatch("{id}")]
+        [MapToApiVersion("2.0")]
         public async Task<IActionResult> Patch([FromRoute] int id, [FromBody] JsonPatchDocument<DTO.Order> patchDocument) 
         {
             if (patchDocument is null) 
