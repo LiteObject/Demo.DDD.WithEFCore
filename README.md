@@ -7,4 +7,4 @@
 6. Integration tests
 7. RESTful principles 
 8. PATCH endpoint
-9. Repository pattern
+9. Repository pattern (with EF core)
