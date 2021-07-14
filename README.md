@@ -8,3 +8,4 @@
 7. RESTful principles 
 8. PATCH endpoint
 9. Repository pattern (with EF core)
+10. Pagination
