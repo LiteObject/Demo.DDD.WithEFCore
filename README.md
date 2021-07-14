@@ -5,3 +5,4 @@
 4. API Versioning
 5. Unit tests using MOQ & In-Memory database
 6. Integration tests
+7. PATCH endpoint
