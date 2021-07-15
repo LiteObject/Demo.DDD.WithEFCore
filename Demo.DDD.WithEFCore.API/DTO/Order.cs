@@ -5,8 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Demo.DDD.WithEFCore.API.DTO
 {
     public class Order
-    {
-        [Required]
+    {        
         public int Id { get; set; }
 
         public string Note { get; set; }
@@ -17,6 +16,7 @@ namespace Demo.DDD.WithEFCore.API.DTO
 
         [Required]
         [MinLength(1)]
+        [MaxLength(10)]
         public ICollection<LineItem> LineItems { get; set; } = new List<LineItem>();
 
         [Required]

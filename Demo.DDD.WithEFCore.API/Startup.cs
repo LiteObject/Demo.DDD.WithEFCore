@@ -34,12 +34,17 @@ namespace Demo.DDD.WithEFCore.API
         public void ConfigureServices(IServiceCollection services)
         {            
             services.AddAutoMapper(typeof(Startup));
+            
             services.AddControllers();
+
             services.AddApiVersioning(config =>
             {
                 config.DefaultApiVersion = new ApiVersion(1, 0);
                 config.AssumeDefaultVersionWhenUnspecified = true;
+
+                // to let the clients of the API know all supported versions
                 config.ReportApiVersions = true;
+
                 config.ApiVersionReader = new HeaderApiVersionReader("api-version");
             });
 
@@ -55,7 +60,8 @@ namespace Demo.DDD.WithEFCore.API
                 options.EnableDetailedErrors(true);
             });
 
-            services.AddScoped<IRepository<Order>, GenericRepository<Order, OrderDbContext>>();
+            // services.AddScoped<IRepository<Order>, GenericRepository<Order, OrderDbContext>>();
+            services.AddScoped<IRepository<Order>, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

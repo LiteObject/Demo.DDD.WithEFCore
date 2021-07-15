@@ -26,7 +26,7 @@
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id) 
+        public async Task<IActionResult> GetById(int id) 
         {
             // ToDo: Use repo
             if (id == 123)
@@ -70,12 +70,18 @@
                 return BadRequest(ModelState);
             }
 
-            /*
-             * Avoid returning business domain entities directly via API calls. Domain entities:
-             *  - Often include more data than the client requires.
-             *  - Unnecessarily couple the app's internal domain model with the publicly exposed API.
-             */
+            if (id != order.Id) 
+            {
+                return BadRequest($"Route id ({id}) doesn't match with object id ({order.Id}) ");
+            }
 
+            var orderEntity = await orderRepo.GetAsync(id);
+
+            if (orderEntity is null) 
+            {
+                return NotFound("No record found in the system");
+            }
+            
             // 200 (OK) or 204 (No Content)
             return Ok(await Task.FromResult(order));
         }
@@ -99,15 +105,15 @@
             }
 
             // Does a record exist?
-            var order = await this.orderRepo.FindAsync(o => o.Id == id);
+            var order = await this.orderRepo.GetAsync(id);
 
-            if (order is null || order.Count == 0) 
+            if (order is null) 
             {
                 return NotFound($"No order with id# {id} found in the system.");
             }
 
             // ToDo: Use AutoMapper
-            var orderToPatch = order[0].ToDto();
+            var orderToPatch = order.ToDto();
             patchDocument.ApplyTo(orderToPatch);
 
             // ToDo: Use AutoMapper to convert DTO to Entity (Domain/Database entity) and save
@@ -116,6 +122,26 @@
             return NoContent();
         }
         
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] DTO.Order newOrder)
+        {
+            if (!ModelState.IsValid) 
+            {
+                return BadRequest(ModelState);  
+            }
+
+            // From DTO to Domain Entity/Model
+            var orderEntity = newOrder.ToEntity();
+
+            await this.orderRepo.Add(orderEntity);
+            await this.orderRepo.SaveChangesAsync();
+
+            // 202 (Accepted) - Request has been accepted for processing, but the processing
+            // has not been completed. The request might or might not be eventually acted upon.
+            // return this.Accepted(new Uri($"/api/orders/{newOrder.Id}"));
+            return this.CreatedAtAction(nameof(GetById), new { id = orderEntity.Id }, orderEntity.ToDto()); 
+        }
+
         [NonAction]
         public async Task<IActionResult> Get(string message) 
         {
