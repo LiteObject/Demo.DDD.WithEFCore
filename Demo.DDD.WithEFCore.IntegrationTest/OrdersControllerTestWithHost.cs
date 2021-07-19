@@ -83,14 +83,14 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
         }
 
         [Fact]
-        public async Task UpdateOrder_Should_Return_200_Ok() 
+        public async Task UpdateOrder_Should_Return_404_NotFound() 
         { 
             // ARRANGE
             var client = _factory.CreateClient(); ;
             var orderDto = new API.DTO.Order
             {
-                Id = 1,
-                OrderDate = System.DateTime.Today,
+                Id = 456,
+                OrderDate = DateTime.Today,
                 ShippingAddress = new API.DTO.Address(),
                 LineItems = GetLineItems(),
             };
@@ -101,12 +101,10 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
             // ACT
             using var response = await client.PutAsync("/api/orders/456", httpContent);
 
-            // ASSERT
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal($"{MediaTypeNames.Application.Json}; charset=utf-8", response.Content.Headers.ContentType.ToString());
+            // ASSERT            
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal($"{MediaTypeNames.Text.Plain}; charset=utf-8", response.Content.Headers.ContentType.ToString());
         }
-
 
         private List<API.DTO.Order> GetTestOrders()
         {
