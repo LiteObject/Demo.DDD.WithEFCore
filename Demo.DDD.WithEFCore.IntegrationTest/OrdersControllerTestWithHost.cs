@@ -86,7 +86,7 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
         public async Task UpdateOrder_Should_Return_404_NotFound() 
         { 
             // ARRANGE
-            var client = _factory.CreateClient(); ;
+            var client = _factory.CreateClient();
             var orderDto = new API.DTO.Order
             {
                 Id = 456,
@@ -104,6 +104,13 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
             // ASSERT            
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             Assert.Equal($"{MediaTypeNames.Text.Plain}; charset=utf-8", response.Content.Headers.ContentType.ToString());
+        }
+
+        [Fact]
+        public async Task PatchOrder_Should_Return_NoContent() 
+        {
+            // ARRANGE
+            var client = _factory.CreateClient();
         }
 
         private List<API.DTO.Order> GetTestOrders()
