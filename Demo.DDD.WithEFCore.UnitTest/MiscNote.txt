@@ -14,3 +14,7 @@ $ coverlet "C:\Users\mhoque\source\repos\LiteObject\Demo.DDD.WithEFCore\Demo.DDD
 # Generate (HTML) reports:
 $ reportgenerator -reports:C:\Users\mhoque\source\repos\LiteObject\Demo.DDD.WithEFCore\Demo.DDD.WithEFCore.UnitTest\TestResults\0a6e599c-96f5-410f-b81d-1de74d8c2413\coverage.cobertura.xml -targetdir:coveragereport -reporttypes:Html
 
+# Generate (HTML) reports from all test projects and output to "\temp\reports": 
+dotnet test --collect:"XPlat Code Coverage"
+reportgenerator "-reports:./*test*/**/*.cobertura.xml" "-targetdir:C:\temp\reports"
+
