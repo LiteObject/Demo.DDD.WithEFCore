@@ -10,6 +10,7 @@
     <None Remove="log.datacollector.21-07-08_10-46-57_74732_5.txt" />
     <None Remove="log.host.21-07-08_10-46-58_96853_5.txt" />
     <None Remove="log.txt" />
+    <None Remove="MiscNote.txt" />
   </ItemGroup>
 
   <ItemGroup>
