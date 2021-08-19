@@ -2,7 +2,10 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
 {
     using Demo.DDD.WithEFCore.API;
     using Demo.DDD.WithEFCore.Entities.Enums;
+    using Humanizer;
+    using Microsoft.AspNetCore.JsonPatch;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.VisualStudio.TestPlatform.Utilities;
     using System;
     using System.Collections.Generic;
     using System.Net;
@@ -10,6 +13,7 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
     using System.Net.Mime;
     using System.Threading.Tasks;
     using Xunit;
+    using Xunit.Abstractions;
 
     /***********************************************************************
      * When creating a test project for an app, separate the unit tests 
@@ -20,10 +24,13 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
      * 
      * Original Article: https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-5.0
      ***********************************************************************/
-    public class OrdersControllerTestWithHost:
+    public class OrdersControllerTestWithHost :
         IClassFixture<WebApplicationFactory<Startup>>
-        // IClassFixture<AppInstance>
+    // IClassFixture<AppInstance>
     {
+
+        private readonly ITestOutputHelper _output;
+
         /*
          * Class Fixtures: When to use: when you want to create a single test context 
          * and share it among all the tests in the class, and have it cleaned up after 
@@ -36,6 +43,7 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
 
         private readonly WebApplicationFactory<Startup> _factory;
 
+
         /* public OrdersControllerTest()
         {
             var server = new TestServer(new WebHostBuilder()
@@ -45,10 +53,11 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
             this.client = server.CreateClient();
         } */
 
-        public OrdersControllerTestWithHost(WebApplicationFactory<Startup> factory)
+        public OrdersControllerTestWithHost(WebApplicationFactory<Startup> factory, ITestOutputHelper output)
         {
             // _instance = factory;
-            this._factory = factory;
+            this._factory = factory ?? throw new ArgumentNullException($"{nameof(factory)} cannot be null.");
+            this._output = output ?? throw new ArgumentNullException($"{nameof(output)} cannot be null.");
         }
 
         [Fact]
@@ -57,14 +66,14 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
             // ARRANGE
             // var request = new HttpRequestMessage(new HttpMethod("GET"), "/api/v1/orders/123");
             var client = _factory.CreateClient();
-                        
+
             // ACT            
             var response = await client.GetAsync("/api/orders/123");
 
             // ASSERT
             response.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal($"{MediaTypeNames.Application.Json}; charset=utf-8", response.Content.Headers.ContentType.ToString());            
+            Assert.Equal($"{MediaTypeNames.Application.Json}; charset=utf-8", response.Content.Headers.ContentType.ToString());
         }
 
         [Fact]
@@ -83,8 +92,8 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
         }
 
         [Fact]
-        public async Task UpdateOrder_Should_Return_404_NotFound() 
-        { 
+        public async Task UpdateOrder_Should_Return_404_NotFound()
+        {
             // ARRANGE
             var client = _factory.CreateClient();
             var orderDto = new API.DTO.Order
@@ -106,11 +115,22 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
             Assert.Equal($"{MediaTypeNames.Text.Plain}; charset=utf-8", response.Content.Headers.ContentType.ToString());
         }
 
-        [Fact]
-        public async Task PatchOrder_Should_Return_NoContent() 
-        {
+        // [Fact]
+        public async Task PatchOrder_Should_Return_NoContent()
+        { 
             // ARRANGE
             var client = _factory.CreateClient();
+            client.DefaultRequestHeaders.Add("api-version", "2.0");
+            var jsonPatchDoc = new JsonPatchDocument<API.DTO.Order>();
+            jsonPatchDoc.Replace(d => d.Note, "new note for test");
+            var jsonPayload = System.Text.Json.JsonSerializer.Serialize(jsonPatchDoc.Operations);
+            _output.WriteLine($"Json Payload: {jsonPayload}");
+
+            // ACT
+            using var response = await client.PatchAsync("/api/orders/456", new StringContent(jsonPayload, System.Text.Encoding.Unicode, MediaTypeNames.Application.Json));
+
+            // ASSERT
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         private List<API.DTO.Order> GetTestOrders()

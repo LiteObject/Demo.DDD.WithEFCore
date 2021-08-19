@@ -53,7 +53,6 @@ namespace Demo.DDD.WithEFCore
                     }
             };
 
-
             context.Orders.Update(orderWithUpdatedValues);
             context.SaveChanges();
 

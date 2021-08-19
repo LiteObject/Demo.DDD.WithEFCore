@@ -1,4 +1,7 @@
 ﻿----------------------------------------------------------------------------------------------------
+# "dotnet test" commands:
+https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test
+----------------------------------------------------------------------------------------------------
 # Troubleshooting:
 $ dotnet test --collect:"XPlat Code Coverage" --settings test.runsettings --diag:log.txt
 

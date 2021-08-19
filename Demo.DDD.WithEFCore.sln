@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -15,7 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.DDD.WithEFCore.IntegrationTest", "Demo.DDD.WithEFCore.IntegrationTest\Demo.DDD.WithEFCore.IntegrationTest.csproj", "{CCBC1B59-97E6-4FA7-9D88-8B97BEF6B33D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.DDD.WithEFCore.IntegrationTest", "Demo.DDD.WithEFCore.IntegrationTest\Demo.DDD.WithEFCore.IntegrationTest.csproj", "{CCBC1B59-97E6-4FA7-9D88-8B97BEF6B33D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8CC0E5C5-71B1-4D70-8B19-502EBBE1A7E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +43,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{426B0823-6298-4EA8-BEC0-619299943FEA} = {8CC0E5C5-71B1-4D70-8B19-502EBBE1A7E9}
+		{CCBC1B59-97E6-4FA7-9D88-8B97BEF6B33D} = {8CC0E5C5-71B1-4D70-8B19-502EBBE1A7E9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6366A09E-4D55-46B5-BDF8-88DCE233B2C5}

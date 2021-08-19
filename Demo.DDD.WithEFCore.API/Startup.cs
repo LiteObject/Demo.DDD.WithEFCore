@@ -2,6 +2,7 @@ using Demo.DDD.WithEFCore.API.Library;
 using Demo.DDD.WithEFCore.Data;
 using Demo.DDD.WithEFCore.Data.Repositories;
 using Demo.DDD.WithEFCore.Entities;
+using Demo.DDD.WithEFCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -75,6 +76,9 @@ namespace Demo.DDD.WithEFCore.API
 
             // services.AddScoped<IRepository<Order>, GenericRepository<Order, OrderDbContext>>();
             services.AddScoped<IRepository<Order>, OrderRepository>();
+
+            services.AddScoped<IDiscountService, NewYearDiscountService>();
+            services.AddScoped<IDiscountService, SpecialDiscountService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
