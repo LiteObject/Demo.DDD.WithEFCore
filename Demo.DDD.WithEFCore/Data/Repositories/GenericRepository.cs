@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
@@ -132,7 +133,8 @@
         /// <inheritdoc />
         public virtual async Task<TEntity> GetAsync<TKey>(TKey id)
         {
-            return await this.DbSet.AsNoTracking().SingleOrDefaultAsync(e => e.Id.Equals(id));
+            // Assuming this method will also be used for updating, so let's remove ".AsNoTracking()"
+            return await this.DbSet.SingleOrDefaultAsync(e => e.Id.Equals(id));
         }
 
         /// <inheritdoc />
@@ -143,7 +145,9 @@
 
         /// <inheritdoc />
         public virtual void Update(TEntity entity)
-        {
+        {     
+            // This way EF updates everything, whether actual changes exist or not,
+            // including navigation props, so the SQL update statement is not efficient.
             this.DbSet.Update(entity);
         }
 

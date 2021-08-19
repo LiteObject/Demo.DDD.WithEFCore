@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Demo.DDD.WithEFCore
@@ -19,7 +20,7 @@ namespace Demo.DDD.WithEFCore
         {
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<OrderDbContext>()
                 .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Warning)
+                .LogTo(Console.WriteLine, LogLevel.Debug)
                 .EnableDetailedErrors()
                 .UseSqlServer(
                 "Server=(LocalDb)\\MSSQLLocalDB;Database=DemoOwnedEntity;Trusted_Connection=True;MultipleActiveResultSets=true",
@@ -36,7 +37,32 @@ namespace Demo.DDD.WithEFCore
 
             IMapper mapper = new MapperConfiguration(cfg => { }).CreateMapper();
             var repo = new GenericRepository<Order, OrderDbContext>(context, mapper);
-            
+
+            // Demo how to update with OrderRepository's update method. Nexted collection not updated.
+            var orderWithUpdatedValues = new Order
+            {
+                Id = 1,
+                Note = "This is a special order + 456",
+                OrderDate = DateTime.UtcNow,
+                ShippingAddress = new Address("123 Street", "House #456", "Frisco", "Texas", "75033"),
+                LineItems = new List<LineItem>
+                    {
+                        new LineItem { Id = 1, Name = "Apple", UnitPrice = 1.50, Quantity = 5 },
+                        new LineItem { Id = 2, Name = "Orange", UnitPrice = 1.65, Quantity = 2 },
+                        new LineItem { Id = 3, Name = "Mango", UnitPrice = 1.75, Quantity = 5 },
+                    }
+            };
+
+
+            context.Orders.Update(orderWithUpdatedValues);
+            context.SaveChanges();
+
+            var orderRepo = new OrderRepository(context, mapper);
+            var testOrder = (await orderRepo.FindAsync(o => o.Id == orderWithUpdatedValues.Id, o => o.LineItems)).FirstOrDefault();
+            orderRepo.Update(orderWithUpdatedValues);
+            var x = await orderRepo.SaveChangesAsync();
+            PrintInfo(x.ToString());
+
             var cancelledOrders = new CancelledOrders();
             var ordersWithLongProcessingTime = new OrdersWithLongProcessingTime();
 
@@ -45,14 +71,14 @@ namespace Demo.DDD.WithEFCore
             troubledOrders.ForEach(o => PrintInfo(o.GetOrderDetails()));
         }
 
-        private static void PrintInfo(string value) 
+        private static void PrintInfo(string value)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(value);
             Console.ResetColor();
         }
 
-        private static async Task SeedDatabase(OrderDbContext context) 
+        private static async Task SeedDatabase(OrderDbContext context)
         {
             var orders = DataUtil.GenerateOrders();
             await context.Orders.AddRangeAsync(orders);
