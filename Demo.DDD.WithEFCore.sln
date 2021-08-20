@@ -12,7 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6DDBF6B8-CCAC-4F8C-8253-D89A527A692D}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		Demo.DDD.WithEFCore.UnitTest\MiscNote.txt = Demo.DDD.WithEFCore.UnitTest\MiscNote.txt
+		MiscNote.txt = MiscNote.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
