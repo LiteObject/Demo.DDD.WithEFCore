@@ -114,18 +114,19 @@
                 return NotFound($"No order with id# {id} found in the system.");
             }
 
-            // ToDo: Use AutoMapper
+            // ToDo: Use AutoMapper. Currently using an ext method.
             var orderToPatch = order.ToDto();
             patchDocument.ApplyTo(orderToPatch, ModelState);
 
+            // Validate request object. This is a very important step.
+            // We need to have unit test for this.
             if (!ModelState.IsValid) 
             {
                 return BadRequest(ModelState);
             }
 
-            // ToDo: Use AutoMapper to convert DTO to Entity (Domain/Database entity) and save
             var orderEntity = orderToPatch.ToEntity();
-
+            
             return NoContent();
         }
         

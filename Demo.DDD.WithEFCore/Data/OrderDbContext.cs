@@ -1,6 +1,7 @@
 ﻿using Demo.DDD.WithEFCore.Data.Configurations;
 using Demo.DDD.WithEFCore.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,26 @@ namespace Demo.DDD.WithEFCore.Data
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<LineItem> LineItems { get; set; }
+
+        /// <summary>
+        /// The on save event handler.
+        /// </summary>
+        /// <param name="entries">
+        /// The entries.
+        /// </param>
+        public delegate void OnSaveEventHandler(IEnumerable<EntityEntry> entries);
+
+        /// <inheritdoc />
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            this.OnSaveEventHandlers?.Invoke(this.ChangeTracker.Entries());
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets or sets the on save event handlers.
+        /// </summary>
+        public OnSaveEventHandler OnSaveEventHandlers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
