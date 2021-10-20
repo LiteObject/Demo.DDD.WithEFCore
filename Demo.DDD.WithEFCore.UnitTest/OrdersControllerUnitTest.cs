@@ -17,12 +17,17 @@
     using Moq;
     using System.Linq;
 
-    public class OrdersControllerUnitTest
+    public class OrdersControllerUnitTest : IDisposable
     {
         private readonly ITestOutputHelper _output;
 
         public OrdersControllerUnitTest(ITestOutputHelper output) => _output = output ?? throw new ArgumentNullException($"{nameof(output)} cannot be null.");
-        
+
+        [Fact(Skip = "Testing SKIP option")]
+        public void Skip_This() 
+        { 
+        }
+
         /// <summary>
         /// 
         /// Original Article:
@@ -30,6 +35,7 @@
         /// </summary>
         /// <returns></returns>
         [Fact]
+        [Trait("Category", "Controller")]
         public async Task Should_Return_400_BadRequest_When_ModelState_IsInvalid() 
         {
             // ARRANGE
@@ -55,6 +61,7 @@
         }
 
         [Fact]
+        [Trait("Category", "Controller")]
         public async Task Should_Return_404_NotFound() 
         {
             // ARRANGE
@@ -73,6 +80,7 @@
         }
 
         [Fact]
+        [Trait("Category", "Controller")]
         public async Task Should_Return_200_Ok_With_Orders() 
         {
             // ARRANGE
@@ -97,6 +105,7 @@
         }
 
         [Fact]
+        [Trait("Category", "Controller")]
         public async Task Should_Throw_InvalidOperationException()
         {
             // ARRANGE
@@ -110,7 +119,13 @@
             Assert.Equal(exceptionMessage, exception.Message);
         }
 
-        private List<Order> GetTestOrders() 
+        public void Dispose()
+        {
+            _output.WriteLine("\"Dispose\" method has been invoked.");
+        }
+
+
+        private List<Order> GetTestOrders()
         {
             return new List<Order>
             {
