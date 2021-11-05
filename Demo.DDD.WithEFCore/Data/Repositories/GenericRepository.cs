@@ -160,7 +160,19 @@
         /// <inheritdoc />
         public virtual async Task<int> SaveChangesAsync()
         {
-            return await this.Context.SaveChangesAsync();
+            try
+            {
+                return await this.Context.SaveChangesAsync();
+            }
+            catch (Exception ex) 
+            {
+                if (ex is InvalidOperationException) 
+                {
+                    Console.Error.WriteLine(ex.Message);
+                }
+                
+                throw;
+            }
         }
 
         /// <inheritdoc />

@@ -24,9 +24,9 @@ namespace Demo.DDD.WithEFCore.Data
         {
         }
 
-        public DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
 
-        public DbSet<LineItem> LineItems { get; set; }
+        public virtual DbSet<LineItem> LineItems { get; set; }
 
         /// <summary>
         /// The on save event handler.
