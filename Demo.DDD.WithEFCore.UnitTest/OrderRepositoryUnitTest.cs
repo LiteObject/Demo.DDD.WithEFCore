@@ -1,19 +1,16 @@
-﻿using AutoMapper;
-using Demo.DDD.WithEFCore.Data;
-using Demo.DDD.WithEFCore.Data.Repositories;
-using Demo.DDD.WithEFCore.Entities;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace Demo.DDD.WithEFCore.UnitTest
+﻿namespace Demo.DDD.WithEFCore.UnitTest
 {
+    using AutoMapper;
+    using Demo.DDD.WithEFCore.Data;
+    using Demo.DDD.WithEFCore.Data.Repositories;
+    using Demo.DDD.WithEFCore.Entities;
+    using Microsoft.EntityFrameworkCore;
+    using Moq;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Xunit;
+
     public class OrderRepositoryUnitTest
     {
         [Fact]
