@@ -13,6 +13,7 @@ using Xunit.Abstractions;
 
 namespace Demo.DDD.WithEFCore.UnitTest
 {
+    [Trait("Category", "Specifications")]
     public class SpecificationUnitTest
     {
         private readonly ITestOutputHelper _output;

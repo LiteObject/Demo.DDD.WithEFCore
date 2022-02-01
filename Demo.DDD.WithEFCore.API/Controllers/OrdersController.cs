@@ -91,6 +91,8 @@
         /// [
         ///     {"op":"add", "path":"/note", "value":"some new value here"}
         /// ]
+        /// 
+        /// More on Patch: https://docs.microsoft.com/en-us/aspnet/core/web-api/jsonpatch?view=aspnetcore-5.0
         /// </summary>
         /// <param name="id"></param>
         /// <param name="patchDocument"></param>
@@ -112,13 +114,19 @@
                 return NotFound($"No order with id# {id} found in the system.");
             }
 
-            // ToDo: Use AutoMapper
+            // ToDo: Use AutoMapper. Currently using an ext method.
             var orderToPatch = order.ToDto();
-            patchDocument.ApplyTo(orderToPatch);
+            patchDocument.ApplyTo(orderToPatch, ModelState);
 
-            // ToDo: Use AutoMapper to convert DTO to Entity (Domain/Database entity) and save
+            // Validate request object. This is a very important step.
+            // We need to have unit test for this.
+            if (!ModelState.IsValid) 
+            {
+                return BadRequest(ModelState);
+            }
+
             var orderEntity = orderToPatch.ToEntity();
-
+            
             return NoContent();
         }
         

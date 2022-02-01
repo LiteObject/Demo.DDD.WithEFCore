@@ -9,3 +9,4 @@
 8. PATCH endpoint
 9. Repository pattern (with EF core)
 10. Pagination
+11 Added instruction on how to generate test coverage report
