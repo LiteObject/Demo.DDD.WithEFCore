@@ -59,7 +59,15 @@ namespace Demo.DDD.WithEFCore.API
                 config.AssumeDefaultVersionWhenUnspecified = true;
                 // to let the clients of the API know all supported versions
                 config.ReportApiVersions = true;
-                config.ApiVersionReader = new HeaderApiVersionReader("api-version");
+
+                //options.Conventions.Controller<ValuesController>().HasApiVersion(1, 0); /* OR [ApiVersion("1.0")] */
+                //options.Conventions.Controller<ValuesController>().HasDeprecatedApiVersion(1, 0).HasApiVersion(1, 1).HasApiVersion(2, 0).Action(c => c.Get1_0()).MapToApiVersion(1, 0).Action(c => c.Get1_1()).MapToApiVersion(1, 1).Action(c => c.Get2_0()).MapToApiVersion(2, 0);
+
+                config.ApiVersionReader = ApiVersionReader.Combine(
+                    new HeaderApiVersionReader("api-version"),
+                    new QueryStringApiVersionReader("v"),
+                    new UrlSegmentApiVersionReader()
+                    );
 
             }).AddVersionedApiExplorer(options =>
             {
