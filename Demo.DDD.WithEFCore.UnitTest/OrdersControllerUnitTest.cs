@@ -16,6 +16,7 @@
     using Xunit.Abstractions;
     using Moq;
     using System.Linq;
+    using Demo.DDD.WithEFCore.API.Controllers.V1;
 
     public class OrdersControllerUnitTest : IDisposable
     {
