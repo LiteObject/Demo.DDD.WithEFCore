@@ -5,6 +5,7 @@ namespace Demo.DDD.WithEFCore.API
     using Demo.DDD.WithEFCore.Data.Repositories;
     using Demo.DDD.WithEFCore.Entities;
     using Demo.DDD.WithEFCore.Services;
+    using Hellang.Middleware.ProblemDetails;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -132,7 +133,9 @@ namespace Demo.DDD.WithEFCore.API
                     });
                  */
             });
-            services.ConfigureOptions<ConfigureSwaggerOptions>();                       
+            services.ConfigureOptions<ConfigureSwaggerOptions>();
+
+            // services.AddProblemDetails();
 
             // services.AddSwaggerExamplesFromAssemblyOf<JsonPatchUserRequestExample>();
 
@@ -174,6 +177,8 @@ namespace Demo.DDD.WithEFCore.API
                         }
                     });
             }
+
+            // app.UseProblemDetails();
 
             app.UseExceptionHandler(appBuilder =>
             {

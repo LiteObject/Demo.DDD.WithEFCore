@@ -32,7 +32,7 @@ namespace Demo.DDD.WithEFCore.API.Controllers.V2
         /// <returns>
         /// Endpoint version number.
         /// </returns>
-        [HttpGet()]
+        [HttpGet("{id}")]
         [MapToApiVersion("2.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
