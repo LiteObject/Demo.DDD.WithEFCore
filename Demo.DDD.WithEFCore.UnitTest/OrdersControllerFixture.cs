@@ -1,4 +1,5 @@
 ﻿using Demo.DDD.WithEFCore.API.Controllers;
+using Demo.DDD.WithEFCore.API.Controllers.V1;
 using Demo.DDD.WithEFCore.Data.Repositories;
 using Demo.DDD.WithEFCore.Entities;
 using Demo.DDD.WithEFCore.Entities.Enums;
@@ -16,7 +17,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
         public OrdersController ordersController { get; private set; }
         public List<Order> testData { get; set; } = default;
 
-        public OrdersControllerFixture() 
+        public OrdersControllerFixture()
         {
             var mockRepo = new Mock<IRepository<Order>>();
             mockRepo.Setup(repo => repo.GetAllAsync(1, 10)).Returns(Task.FromResult<List<Order>>(testData));
@@ -24,7 +25,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
         }
 
         public void Dispose()
-        {            
+        {
         }
     }
 }

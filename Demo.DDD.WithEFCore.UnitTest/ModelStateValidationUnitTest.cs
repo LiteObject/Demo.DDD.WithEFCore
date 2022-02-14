@@ -3,7 +3,7 @@
     using Demo.DDD.WithEFCore.API.DTO;
     using System;
     using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
     using Xunit;
     using Xunit.Abstractions;
 

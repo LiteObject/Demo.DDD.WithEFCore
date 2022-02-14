@@ -11,7 +11,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
     {
 
         //[Fact]
-        public void Test_FirstOrDefault_Case_Sensitivity()         
+        public void Test_FirstOrDefault_Case_Sensitivity()
         {
             // ARRANGE
             var stringCollection = new string[] { "One", "Two", "Three" };

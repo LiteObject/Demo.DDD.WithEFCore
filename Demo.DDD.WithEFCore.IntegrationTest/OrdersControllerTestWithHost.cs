@@ -117,7 +117,7 @@ namespace Demo.DDD.WithEFCore.IntegrationTest
 
         // [Fact]
         public async Task PatchOrder_Should_Return_NoContent()
-        { 
+        {
             // ARRANGE
             var client = _factory.CreateClient();
             client.DefaultRequestHeaders.Add("api-version", "2.0");

@@ -9,15 +9,15 @@
     public class OrderRepository : GenericRepository<Order, OrderDbContext>
     {
         public OrderRepository(OrderDbContext context, IMapper mapper) : base(context, mapper)
-        { 
+        {
         }
 
         /// <inheritdoc />
-        public override void Update(Order orderWithUpdatedValues) 
+        public override void Update(Order orderWithUpdatedValues)
         {
             var existingOrder = this.DbSet.Find(orderWithUpdatedValues.Id);
 
-            if (existingOrder != null) 
+            if (existingOrder != null)
             {
                 var entityEntry = Context.Entry(existingOrder);
                 entityEntry.CurrentValues.SetValues(orderWithUpdatedValues);

@@ -24,8 +24,8 @@
         public OrdersControllerUnitTest(ITestOutputHelper output) => _output = output ?? throw new ArgumentNullException($"{nameof(output)} cannot be null.");
 
         [Fact(Skip = "Testing SKIP option")]
-        public void Skip_This() 
-        { 
+        public void Skip_This()
+        {
         }
 
         /// <summary>
@@ -36,7 +36,7 @@
         /// <returns></returns>
         [Fact]
         [Trait("Category", "Controller")]
-        public async Task Should_Return_400_BadRequest_When_ModelState_IsInvalid() 
+        public async Task Should_Return_400_BadRequest_When_ModelState_IsInvalid()
         {
             // ARRANGE
             var mockRepo = new Mock<IRepository<Order>>();
@@ -45,9 +45,9 @@
             // An invalid model state is tested by adding errors using AddModelError. This should produce 400 (Bad Request). 
             controller.ModelState.AddModelError(nameof(API.DTO.Order.OrderDate), "Required");
 
-            var orderDto = new API.DTO.Order 
-            { 
-                Id = 1,                 
+            var orderDto = new API.DTO.Order
+            {
+                Id = 1,
                 ShippingAddress = new API.DTO.Address(),
                 LineItems = new List<API.DTO.LineItem>(),
             };
@@ -62,7 +62,7 @@
 
         [Fact]
         [Trait("Category", "Controller")]
-        public async Task Should_Return_404_NotFound() 
+        public async Task Should_Return_404_NotFound()
         {
             // ARRANGE
             var mockRepo = new Mock<IRepository<Order>>();
@@ -81,7 +81,7 @@
 
         [Fact]
         [Trait("Category", "Controller")]
-        public async Task Should_Return_200_Ok_With_Orders() 
+        public async Task Should_Return_200_Ok_With_Orders()
         {
             // ARRANGE
             var mockRepo = new Mock<IRepository<Order>>();

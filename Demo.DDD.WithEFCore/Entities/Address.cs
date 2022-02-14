@@ -46,7 +46,7 @@ namespace Demo.DDD.WithEFCore.Entities
             Street1 = street1;
             Street2 = street2;
             City = city;
-            State = state;            
+            State = state;
             Zip = zip;
         }
 

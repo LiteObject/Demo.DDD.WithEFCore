@@ -41,7 +41,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
                     OrderDate = DateTime.Today.AddDays(-1),
                     ShippingAddress = new Address("123 Street", "House #456", "Frisco", "Texas", "75033"),
                     LineItems = GetLineItems(),
-                    Status = OrderStatus.ProcessingHalted,                    
+                    Status = OrderStatus.ProcessingHalted,
                 },
                 new()
                 {
@@ -81,12 +81,13 @@ namespace Demo.DDD.WithEFCore.UnitTest
             this._output.WriteLine($"{nameof(ordersWithLongProcessingTime)}:\n {System.Text.Json.JsonSerializer.Serialize(ordersWithLongProcessingTime)}");
 
             // ASSERT
-            Assert.All(ordersWithLongProcessingTime, order => {
+            Assert.All(ordersWithLongProcessingTime, order =>
+            {
                 Assert.True(order.OrderDate.AddDays(5) <= DateTime.Today);
                 Assert.True(
                     order.Status == OrderStatus.ProcessingStarted ||
                     order.Status == OrderStatus.ProcessingHalted ||
-                    order.Status == OrderStatus.ProcessingEnded);                
+                    order.Status == OrderStatus.ProcessingEnded);
             });
         }
 

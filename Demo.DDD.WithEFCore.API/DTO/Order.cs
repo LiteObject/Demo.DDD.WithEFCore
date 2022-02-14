@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Demo.DDD.WithEFCore.API.DTO
 {
     public class Order
-    {        
+    {
         public int Id { get; set; }
 
         public string Note { get; set; }

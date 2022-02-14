@@ -14,13 +14,13 @@
     public class OrderRepositoryUnitTest
     {
         [Fact]
-        public async Task OnSave_Should_Throw_Exception() 
-        { 
+        public async Task OnSave_Should_Throw_Exception()
+        {
             // ARRANGE
             var mockOrderDbSet = new Mock<DbSet<Order>>();
             var mockContext = new Mock<OrderDbContext>();
             mockContext.Setup(m => m.Set<Order>()).Returns(mockOrderDbSet.Object);
-            mockContext.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()))                
+            mockContext.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()))
                 .Throws<InvalidOperationException>().Verifiable();
 
             var mockMapper = new Mock<IMapper>();
@@ -29,7 +29,7 @@
             var newOrder = new Order();
 
             // ACT
-            await repo.Add(newOrder);            
+            await repo.Add(newOrder);
             await Assert.ThrowsAsync<InvalidOperationException>(() => repo.SaveChangesAsync());
 
             // ASSERT

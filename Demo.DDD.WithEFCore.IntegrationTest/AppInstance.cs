@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DDD.WithEFCore.IntegrationTest
 {
-    public class AppInstance: WebApplicationFactory<Startup>
+    public class AppInstance : WebApplicationFactory<Startup>
     {
     }
 }
