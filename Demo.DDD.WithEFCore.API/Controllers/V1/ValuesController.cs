@@ -12,7 +12,7 @@ namespace Demo.DDD.WithEFCore.API.Controllers.V1
     public class ValuesController : ControllerBase
     {
         /// <summary>
-        /// GET method
+        /// This is the legacy GET method.
         /// </summary>
         /// <returns>
         /// Endpoint version number.

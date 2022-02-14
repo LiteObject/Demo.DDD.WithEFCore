@@ -1,44 +1,58 @@
-using Demo.DDD.WithEFCore.API.Library;
-using Demo.DDD.WithEFCore.Data;
-using Demo.DDD.WithEFCore.Data.Repositories;
-using Demo.DDD.WithEFCore.Entities;
-using Demo.DDD.WithEFCore.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-
 namespace Demo.DDD.WithEFCore.API
 {
+    using Demo.DDD.WithEFCore.API.Library;
+    using Demo.DDD.WithEFCore.Data;
+    using Demo.DDD.WithEFCore.Data.Repositories;
+    using Demo.DDD.WithEFCore.Entities;
+    using Demo.DDD.WithEFCore.Services;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.HttpsPolicy;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.AspNetCore.Mvc.Formatters;
+    using Microsoft.AspNetCore.Mvc.Versioning;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
+    using Microsoft.Extensions.PlatformAbstractions;
+    using Microsoft.OpenApi.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// 
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public class Startup
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
@@ -118,7 +132,7 @@ namespace Demo.DDD.WithEFCore.API
                     });
                  */
             });
-            services.ConfigureOptions<ConfigureSwaggerOptions>();
+            services.ConfigureOptions<ConfigureSwaggerOptions>();                       
 
             // services.AddSwaggerExamplesFromAssemblyOf<JsonPatchUserRequestExample>();
 
@@ -137,7 +151,12 @@ namespace Demo.DDD.WithEFCore.API
             services.AddScoped<IDiscountService, SpecialDiscountService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="provider"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
