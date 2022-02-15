@@ -9,6 +9,7 @@ namespace Demo.DDD.WithEFCore.API.Controllers.V1
     [ApiController]
     [ApiVersion("1.0", Deprecated = true)]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/[controller]")] // To make veriosning work with header value
     public class ValuesController : ControllerBase
     {
         /// <summary>

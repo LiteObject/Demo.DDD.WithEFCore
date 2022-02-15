@@ -9,6 +9,7 @@ namespace Demo.DDD.WithEFCore.API.Controllers.V2
     [ApiController]
     [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/[controller]")] // To make veriosning work with header value
     public class ValuesController : ControllerBase
     {
         /// <summary>
@@ -43,7 +44,7 @@ namespace Demo.DDD.WithEFCore.API.Controllers.V2
                 return Ok();
             }
 
-            return BadRequest();
+            return BadRequest($"{nameof(id)} must be greater than 0.");
         }
     }
 }

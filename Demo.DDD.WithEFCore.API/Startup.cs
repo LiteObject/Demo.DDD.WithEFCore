@@ -135,7 +135,15 @@ namespace Demo.DDD.WithEFCore.API
             });
             services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-            // services.AddProblemDetails();
+            services.AddProblemDetails(options => {
+                // Control when an exception is included
+                options.IncludeExceptionDetails = (ctx, ex) =>
+                {
+                    // Fetch services from HttpContext.RequestServices
+                    var env = ctx.RequestServices.GetRequiredService<IHostEnvironment>();
+                    return env.IsDevelopment() || env.IsStaging();
+                };
+            });
 
             // services.AddSwaggerExamplesFromAssemblyOf<JsonPatchUserRequestExample>();
 
@@ -171,9 +179,9 @@ namespace Demo.DDD.WithEFCore.API
                     options =>
                     {
                         // build a swagger endpoint for each discovered API version
-                        foreach (var description in provider.ApiVersionDescriptions)
+                        foreach (var groupName in provider.ApiVersionDescriptions.Select(description => description.GroupName))
                         {
-                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                            options.SwaggerEndpoint($"/swagger/{groupName}/swagger.json", groupName.ToUpperInvariant());
                         }
                     });
             }
