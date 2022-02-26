@@ -1,26 +1,22 @@
-using Demo.DDD.WithEFCore.API.Library;
 using Demo.DDD.WithEFCore.Data;
 using Demo.DDD.WithEFCore.Data.Repositories;
 using Demo.DDD.WithEFCore.Entities;
 using Demo.DDD.WithEFCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Demo.DDD.WithEFCore.API
 {
@@ -36,7 +32,7 @@ namespace Demo.DDD.WithEFCore.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
             services.AddAutoMapper(typeof(Startup));
 
             /*
@@ -44,9 +40,12 @@ namespace Demo.DDD.WithEFCore.API
              * all JSON content. To add support for JsonPatch using Newtonsoft.Json, while leaving the other formatters 
              * unchanged, update the project's Startup.ConfigureServices as follows:
              */
-            services.AddControllers(options => {
+            services.AddControllers(options =>
+            {
                 options.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
-            }).AddNewtonsoftJson();
+                options.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters()
+                .AddNewtonsoftJson();
 
             services.AddApiVersioning(config =>
             {
@@ -67,7 +66,8 @@ namespace Demo.DDD.WithEFCore.API
 
             // services.AddSwaggerExamplesFromAssemblyOf<JsonPatchUserRequestExample>();
 
-            services.AddDbContext<OrderDbContext>(options => {
+            services.AddDbContext<OrderDbContext>(options =>
+            {
                 options.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=DemoOwnedEntity;Trusted_Connection=True;MultipleActiveResultSets=true");
                 options.LogTo(Console.WriteLine);
                 options.EnableSensitiveDataLogging(true); ;
@@ -79,6 +79,9 @@ namespace Demo.DDD.WithEFCore.API
 
             services.AddScoped<IDiscountService, NewYearDiscountService>();
             services.AddScoped<IDiscountService, SpecialDiscountService>();
+
+            // Provides a mapping between file exts and MIME types
+            services.AddSingleton<FileExtensionContentTypeProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
