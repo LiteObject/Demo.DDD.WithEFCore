@@ -1,5 +1,22 @@
 namespace Demo.DDD.WithEFCore.API
 {
+    using Demo.DDD.WithEFCore.Data;
+    using Demo.DDD.WithEFCore.Data.Repositories;
+    using Demo.DDD.WithEFCore.Services;
+    using Hellang.Middleware.ProblemDetails;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.AspNetCore.Mvc.Formatters;
+    using Microsoft.AspNetCore.Mvc.Versioning;
+    using Microsoft.AspNetCore.StaticFiles;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Options;
+    using Microsoft.Extensions.PlatformAbstractions;
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
@@ -135,7 +152,7 @@ namespace Demo.DDD.WithEFCore.API
             });
 
             // services.AddScoped<IRepository<Order>, GenericRepository<Order, OrderDbContext>>();
-            services.AddScoped<IRepository<Order>, OrderRepository>();
+            services.AddScoped<IRepository<Entities.Order>, OrderRepository>();
 
             services.AddScoped<IDiscountService, NewYearDiscountService>();
             services.AddScoped<IDiscountService, SpecialDiscountService>();
