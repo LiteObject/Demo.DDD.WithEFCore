@@ -20,12 +20,12 @@ namespace Demo.DDD.WithEFCore.Entities.Enums
         ProcessingHalted,
         [Description("Order has been processed and ready to be shipped")]
         ProcessingEnded,
-        
+
         [Description("Order has been cancelled by the buyer")]
         CancelledByBuyer,
         [Description("Order has been cancelled by the system")]
         CancelledBySystem,
-        
+
         [Description("Order has been shipped")]
         Shipped,
         [Description("Order has been received by the buyer")]

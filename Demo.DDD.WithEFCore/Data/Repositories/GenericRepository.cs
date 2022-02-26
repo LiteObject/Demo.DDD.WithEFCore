@@ -95,7 +95,7 @@
         }
 
         public virtual async Task<List<TEntity>> FindAsync(
-            Specification<TEntity> specification, 
+            Specification<TEntity> specification,
             params Expression<Func<TEntity, object>>[] includeProperties)
         {
             var query = this.GetAllIncluding(includeProperties);
@@ -119,8 +119,8 @@
         /// <inheritdoc />
         public virtual async Task<List<TEntity>> GetAllAsync(int pageNumber, int pageSize)
         {
-            if (pageSize < 1) 
-            { 
+            if (pageSize < 1)
+            {
                 pageSize = 1;
             }
 
@@ -145,7 +145,7 @@
 
         /// <inheritdoc />
         public virtual void Update(TEntity entity)
-        {     
+        {
             // This way EF updates everything, whether actual changes exist or not,
             // including navigation props, so the SQL update statement is not efficient.
             this.DbSet.Update(entity);
@@ -160,7 +160,19 @@
         /// <inheritdoc />
         public virtual async Task<int> SaveChangesAsync()
         {
-            return await this.Context.SaveChangesAsync();
+            try
+            {
+                return await this.Context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                if (ex is InvalidOperationException)
+                {
+                    Console.Error.WriteLine(ex.Message);
+                }
+
+                throw;
+            }
         }
 
         /// <inheritdoc />

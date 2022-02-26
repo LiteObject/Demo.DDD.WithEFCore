@@ -32,15 +32,15 @@ namespace Demo.DDD.WithEFCore.Entities
         [Required]
         public Address ShippingAddress { get; set; }
 
-        public double CalculateTotal() 
+        public double CalculateTotal()
         {
             double total = 0;
 
-            foreach (var item in LineItems) 
+            foreach (var item in LineItems)
             {
                 total += item.CalculateSubTotal();
             }
-            
+
             return total;
         }
 
@@ -48,22 +48,22 @@ namespace Demo.DDD.WithEFCore.Entities
         /// Use this method to get a humanized version of the status.
         /// </summary>
         /// <returns>Returns status string</returns>
-        public string GetStatus() 
+        public string GetStatus()
         {
             return this.Status.Humanize();
         }
 
-        public string GetOrderDetails() 
-        { 
+        public string GetOrderDetails()
+        {
             var sb = new StringBuilder();
             sb.AppendLine($"\nOrder (Id: {Id}) has been set to {Status} ({GetStatus()})");
             sb.AppendLine($"Shipping info: {ShippingAddress}\n");
 
-            foreach (var line in LineItems) 
+            foreach (var line in LineItems)
             {
                 sb.AppendLine($"- {line.Name}: Unit Price: ${line.UnitPrice}, Quantity: {line.Quantity}");
             }
-                        
+
             sb.AppendLine($"\nOrder total is ${CalculateTotal()}.");
             return sb.ToString();
         }

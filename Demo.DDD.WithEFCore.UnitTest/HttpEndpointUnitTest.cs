@@ -14,7 +14,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
 {
     public class HttpEndpointUnitTest
     {
-       // [Fact]
+        // [Fact]
         public void ShouldReturnContentStringWhenStatusCodeIsOkAsync()
         {
             /* var handlerMock = new Mock<HttpMessageHandler>();
@@ -46,7 +46,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
         }
 
         class User
-        { 
+        {
             public int Id { get; set; }
             public string Name { get; set; }
         }

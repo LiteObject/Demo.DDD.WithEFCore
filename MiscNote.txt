@@ -1,0 +1,23 @@
+﻿----------------------------------------------------------------------------------------------------
+# "dotnet test" commands:
+https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test
+----------------------------------------------------------------------------------------------------
+# Install "reportgenerator":
+dotnet tool install -g dotnet-reportgenerator-globaltool
+
+# Generate (HTML) reports from all test projects and output to "\temp\reports": 
+dotnet test --collect:"XPlat Code Coverage" (same dir as solution, where the sln file is)
+reportgenerator "-reports:./*test*/**/*.cobertura.xml" "-targetdir:C:\temp\reports"
+----------------------------------------------------------------------------------------------------
+# Troubleshooting:
+$ dotnet test --collect:"XPlat Code Coverage" --settings test.runsettings --diag:log.txt
+
+# You'll get logs file in same folder similar to:
+# log.datacollector.19-09-12_14-55-17_64755_5.txt
+# log.host.19-09-12_14-55-18_82700_6.txt
+# log.txt
+----------------------------------------------------------------------------------------------------
+
+$ coverlet "\Demo.DDD.WithEFCore\Demo.DDD.WithEFCore.UnitTest\bin\Debug\net6.0\Demo.DDD.WithEFCore.dll" --target "dotnet" --targetargs "test \Demo.DDD.WithEFCore\Demo.DDD.WithEFCore.UnitTest --no-build" --verbosity detailed
+
+

@@ -1,20 +1,23 @@
 ﻿namespace Demo.DDD.WithEFCore.Data.Repositories
 {
     using AutoMapper;
-    using Demo.DDD.WithEFCore.Entities;    
-    
+    using Demo.DDD.WithEFCore.Entities;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class OrderRepository : GenericRepository<Order, OrderDbContext>
     {
         public OrderRepository(OrderDbContext context, IMapper mapper) : base(context, mapper)
-        { 
+        {
         }
 
         /// <inheritdoc />
-        public override void Update(Order orderWithUpdatedValues) 
+        public override void Update(Order orderWithUpdatedValues)
         {
             var existingOrder = this.DbSet.Find(orderWithUpdatedValues.Id);
 
-            if (existingOrder != null) 
+            if (existingOrder != null)
             {
                 var entityEntry = Context.Entry(existingOrder);
                 entityEntry.CurrentValues.SetValues(orderWithUpdatedValues);

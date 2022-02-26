@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using Demo.DDD.WithEFCore.API.Controllers;
+    using Demo.DDD.WithEFCore.API.Controllers.V1;
     using Demo.DDD.WithEFCore.Data;
     using Demo.DDD.WithEFCore.Data.Repositories;
     using Demo.DDD.WithEFCore.Entities;

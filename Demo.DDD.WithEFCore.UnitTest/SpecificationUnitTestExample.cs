@@ -12,7 +12,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
         private readonly ITestOutputHelper _output;
         private readonly OrderDbContext context;
 
-        public SpecificationUnitTestExample(ITestOutputHelper output) 
+        public SpecificationUnitTestExample(ITestOutputHelper output)
         {
             this._output = output;
 
@@ -26,7 +26,7 @@ namespace Demo.DDD.WithEFCore.UnitTest
             context.SaveChanges();
 
             _output.WriteLine($"Instantiated \"{nameof(SpecificationUnitTestExample)}\"");
-        } 
+        }
 
         public void TestOrdersWithLongProcessingTime()
         {

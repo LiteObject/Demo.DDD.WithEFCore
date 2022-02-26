@@ -19,8 +19,8 @@ namespace Demo.DDD.WithEFCore.UnitTest
 
         public LineItemUnitTest(ITestOutputHelper output) => _output = output ?? throw new ArgumentNullException($"{nameof(output)} cannot be null.");
 
-        [Fact]        
-        public void LineItemUnitPriceCannotBeLessThenOrEqualToOne() 
+        [Fact]
+        public void LineItemUnitPriceCannotBeLessThenOrEqualToOne()
         {
             // ARRANGE
             var lineItem = new LineItem();

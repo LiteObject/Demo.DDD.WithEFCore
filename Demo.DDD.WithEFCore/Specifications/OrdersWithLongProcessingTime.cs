@@ -13,7 +13,7 @@ namespace Demo.DDD.WithEFCore.Specifications
     /// A order in a Processing status and was created 2 days ago.
     /// </summary>
     public class OrdersWithLongProcessingTime : Specification<Order>
-    {        
+    {
         public override Expression<Func<Order, bool>> ToExpression() =>
            order =>
                (order.Status == Entities.Enums.OrderStatus.ProcessingStarted ||
